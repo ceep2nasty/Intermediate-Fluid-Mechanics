@@ -88,7 +88,7 @@ fig2, ax2 = plt.subplots(1,1, figsize=(8,8))
 # Left: quiver  + equipotential contours
 step = 12
 axs[0].quiver(XX[::step, ::step], YY[::step, ::step],
-              U_plot[::step, ::step], V_plot[::step, ::step], scale=200)
+              U_plot[::step, ::step], V_plot[::step, ::step], scale=100)
 cs = axs[0].contour(XX, YY, PHI_plot, levels=20, colors='k', linewidths=1)
 axs[0].clabel(cs, inline=True, fontsize=7, fmt="%.2f")
 axs[0].set_title("Velocity vectors + equipotentials")
