@@ -27,11 +27,11 @@ def G_M(M):
     return t1+t2
 
 n = 100
-M = np.linspace(3,1,n)
+M = np.linspace(1,3,n)
 
 x = (d/f)*G_M(M)
 L_choke = x[-1]
-x = x[-1]-x
+x = -(x - x[-1])
 
 plt.plot(x, M)
 plt.xlabel("x in m")
