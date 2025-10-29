@@ -80,7 +80,26 @@ def composite_plot(Gamma0, levels_stream=25, levels_p=31, skip=10):
 
     return fig, ax
 
-# -------- make one figure per case, each with all overlays --------
+def lift_drag_from_pressure_on_circle(U=1.0, a=1.0, rho=1.0, Gamma=0.0, p_inf=0.0, n=4000):
+    import numpy as np
+    theta = np.linspace(0, 2*np.pi, n, endpoint=False)
+    u_theta = -2*U*np.sin(theta) + Gamma/(2*np.pi*a)   # tangential speed on r=a
+    p = p_inf + 0.5*rho*(U*U - u_theta*u_theta)        # Bernoulli (steady)
+    nx, ny = np.cos(theta), np.sin(theta)               # outward normal
+    dFx = -(p * nx) * a                                 # per-unit-span differential force
+    dFy = -(p * ny) * a
+    Dp = np.trapz(dFx, theta)                           # pressure drag
+    Lp = np.trapz(dFy, theta)                           # pressure lift
+    return Dp, Lp
+
 for G in [0.0, -2*np.pi, -4*np.pi, -9*np.pi/2]:
-    composite_plot(G)
+    fig, ax = composite_plot(G)  # your plotting function from earlier
+    Dp, Lp = lift_drag_from_pressure_on_circle(U=1.0, a=1.0, rho=1.0, Gamma=G, p_inf=0.0, n=4000)
+    Kj = 1.0 * 1.0 * G  # ρ U Γ with ρ=U=1
+
+    print(f"Γ = {G/np.pi:.1f}π:  Drag D' = {Dp:.6e},  Lift L' = {Lp:.6e},  ρUΓ = {Kj:.6e}")
+
+
 plt.show()
+
+
